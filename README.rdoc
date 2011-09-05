@@ -1,5 +1,7 @@
 = capistrano-ext-set-helpers
 
+* url: https://github.com/andynu/capistrano-ext-set-helpers
+
 == DESCRIPTION:
 
 Set helpers allow easier parsing of environment options,
@@ -17,6 +19,8 @@ and top level helpers for the Highline ask/menu methods.
   env_set_optional(variable)
   set_ask_menu(variable, options, default=nil)
   set_ask(variable, question, default=nil)
+
+  include:
 
 == REQUIREMENTS:
 

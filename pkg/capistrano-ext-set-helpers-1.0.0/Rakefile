@@ -8,6 +8,7 @@ require 'hoe'
 # Hoe.plugin :inline
 # Hoe.plugin :racc
 # Hoe.plugin :rubyforge
+Hoe.plugin :gemcutter
 
 Hoe.spec 'capistrano-ext-set-helpers' do
   # HEY! If you fill these out in ~/.hoe_template/Rakefile.erb then
