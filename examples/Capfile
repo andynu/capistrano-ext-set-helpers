@@ -1,0 +1,30 @@
+require 'capistrano/ext/set/helpers'
+
+desc "show variables"
+task :show do
+
+  env_or_set(:user,:default_user_name)
+  puts "user = #{user}"
+
+  ENV['a'] = '1'
+  a_from_env = env_or_ask(:a, "What is your user name?")
+  b_from_ask = env_or_ask(:b, "How many letters into the alphabet is the letter B")
+  set(:a, a_from_env)
+  set(:b, b_from_ask)
+
+  ENV['d'] = '4'
+  set_ask(:c, "How many letters into the alphabet is the letter C?")
+  set_ask(:d, "How many letters into the alphabet is the letter D?")
+  set_ask(:e, "How many letters into the alphabet is the letter E?","5")
+
+  ENV['f'] = '6'
+  set_ask_menu(:f, "How many letters into the alphabet is the letter F?")
+  set_ask_menu(:g, %w[7 8 9])
+  set_ask_menu(:h, %w[8 9 10], "8")
+
+  [:a,:b,:c,:d,:e,:f,:g,:h].each do |l|
+    puts "#{l} = #{fetch(l)}"
+  end
+end
+
+# vim: ft=ruby
