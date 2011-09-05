@@ -1,3 +1,7 @@
+#require 'capistrano'
+#require 'capistrano/configuration/variables'
+#include Capistrano::Configuration::Variables
+
 class CapistranoExtSetHelpers
   VERSION = '1.0.0'
 end
@@ -6,6 +10,37 @@ end
 #
 # Helpers
 #
+
+# use environment variable if provided
+# otherwise use the passed value
+def env_or_set(variable, value=nil, &block)
+  value = if ENV[variable.to_s].nil?
+    value
+  else
+    if ENV[variable.to_s] == /^:/
+      ENV[variable.to_s].to_sym
+    else
+      ENV[variable.to_s].to_s
+    end
+  end
+  set( variable ) {
+    value = block.call if block_given? && value.nil?
+    value = true if value =~ /true/i
+    value = false if value =~ /false/i
+    value
+  }
+end
+
+# sets variable from environment variable if provided
+# otherwise does nothing.
+def env_set_optional(variable)
+  value = if ENV[variable.to_s] == /^:/
+            ENV[variable.to_s].to_sym
+          else
+            ENV[variable.to_s].to_s
+          end
+  set(variable, value) unless value.empty?
+end
 
 # checks the environment first for a variable,
 # then asks the user to select its value from
@@ -53,37 +88,6 @@ def env_or_ask(variable, question, default=nil)
   end
   yield(value) if block_given?
   return value
-end
-
-# use environment variable if provided
-# otherwise use the passed value
-def env_or_set(variable, value=nil, &block)
-  value = if ENV[variable.to_s].nil?
-    value
-  else
-    if ENV[variable.to_s] == /^:/
-      ENV[variable.to_s].to_sym
-    else
-      ENV[variable.to_s].to_s
-    end
-  end
-  set( variable ) {
-    value = block.call if block_given? && value.nil?
-    value = true if value =~ /true/i
-    value = false if value =~ /false/i
-    value
-  }
-end
-
-# sets variable from environment variable if provided
-# otherwise does nothing.
-def env_set_optional(variable)
-  value = if ENV[variable.to_s] == /^:/
-            ENV[variable.to_s].to_sym
-          else
-            ENV[variable.to_s].to_s
-          end
-  set(variable, value) unless value.empty?
 end
 
 # lazy set a variable with env_or_menu
