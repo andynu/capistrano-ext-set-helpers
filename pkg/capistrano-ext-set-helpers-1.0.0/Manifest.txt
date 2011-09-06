@@ -1,7 +1,0 @@
-.autotest
-History.txt
-Manifest.txt
-README.rdoc
-Rakefile
-lib/capistrano/ext/set/helpers.rb
-examples/Capfile
